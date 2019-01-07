@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source name="MySQL - product@202.182.105.243" uuid="65d75a66-9706-46b4-8648-b3e6aafae7c6">
+    <database-info product="MySQL" version="5.7.24" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.44 ( Revision: b3cda4f864902ffdde495b9df93937c3e20009be )">
+      <extra-name-characters>#@</extra-name-characters>
+      <identifier-quote-string>`</identifier-quote-string>
+    </database-info>
+    <case-sensitivity plain-identifiers="exact" quoted-identifiers="exact"/>
+    <schema name="" catalog="product"/>
+    <table name="product" schema="" catalog="product" type="TABLE">
+      <column name="picture_url" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12" remarks="5Zu+54mH6ZO+5o6l"/>
+      <column name="image_path" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12" remarks="5Zu+54mH6Lev5b6E"/>
+      <column name="category" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12" remarks="5ZOB57G7"/>
+      <column name="url" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12" remarks="5ZWG5ZOB6ZO+5o6l"/>
+      <column name="sku" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" remarks="5Lqn5ZOBc2t1" autoIncrement="true"/>
+      <column name="title" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12" remarks="5Lqn5ZOB5ZCN56ew"/>
+      <column name="host" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12" remarks="572R56uZ"/>
+      <column name="product_details" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1" remarks="5Lqn5ZOB6K+m5oOF"/>
+      <primary-key name="PRIMARY" columns="sku,host,category"/>
+      <index name="host" unique="false" columns="host"/>
+      <index name="host_category" unique="false" columns="category,host"/>
+      <index name="type" unique="false" columns="category"/>
+    </table>
+  </data-source>
+</component>
