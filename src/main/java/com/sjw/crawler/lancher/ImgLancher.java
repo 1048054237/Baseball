@@ -8,6 +8,7 @@ import com.sjw.entity.ProductEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -32,9 +33,11 @@ public class ImgLancher {
     private ProductDao dao;
     @Autowired
     private SendMail sendMail;
+    @Value("${imgDownload.name}")
+    private String imgname;
 
-    public void startDownload() throws ExecutionException, InterruptedException {
-        sendMail.SendEmail("ImgDown is starting," + DateUtil.date(), "ImgDown", "zhangning_holley@126.com");
+    public void startDownload(){
+        sendMail.SendEmail("ImgDown is starting," + DateUtil.date(), imgname, "zhangning_holley@126.com");
         Pageable page = PageRequest.of(0, 70);
         page = page.first();
         Page<ProductEntity> all = dao.findAll(page);
@@ -56,7 +59,14 @@ public class ImgLancher {
             }
             for (int i = 0; i < futures.size(); i++) {
                 Future<ProductEntity> productEntityFuture = futures.get(i);
-                ProductEntity productEntity = productEntityFuture.get();
+                ProductEntity productEntity = null;
+                try {
+                    productEntity = productEntityFuture.get();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
                 if (productEntity != null) {
                     String imagePath = productEntity.getImagePath();
                     if (imagePath != null && new File(imagePath).exists()) {
@@ -79,8 +89,8 @@ public class ImgLancher {
             if (all.getSize() != pageDefaultSize) {
                 flag = false;
             }
-            sendMail.SendEmail("ImgDown is starting," + DateUtil.date(), "ImgDown", "zhangning_holley@126.com");
         }
+        sendMail.SendEmail("ImgDown is starting," + DateUtil.date(), imgname, "zhangning_holley@126.com");
     }
 
 

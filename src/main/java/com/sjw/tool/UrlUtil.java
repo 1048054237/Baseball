@@ -2,7 +2,6 @@ package com.sjw.tool; /**
  * Created by Administrator on 2018/8/15.
  */
 
-import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.URLUtil;
 
 import java.net.URL;
@@ -142,6 +141,6 @@ public class UrlUtil extends URLUtil {
     }
 
     public static void main(String[] args) {
-        System.out.println(addPath("https://www.baseballfantshirts.com", "123MySQL - baseball@120.77.52.157 [2]"));
+        System.out.println(addPath("https://" + "www.basketballfantshirts.com", "categories"));
     }
 }

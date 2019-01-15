@@ -29,17 +29,7 @@ public class PPageProcesser implements PageProcessor {
         Selectable url = page.getUrl();
         Object host = page.getRequest().getExtra("host");
         if (host != null && url.get().equals(host.toString())) {
-            List<Selectable> nodes = page.getHtml().xpath("//div[@id='sidebar']//li/a").nodes();
-            for (int i = 1; i < nodes.size(); i++) {
-                Selectable selectable = nodes.get(i);
-                String href = selectable.links().get();
-                page.addTargetRequest(href);
-            }
-            if (page.getHtml().xpath("//li[@class='sidebar_more active']").get() != null) {
-                page.addTargetRequest(url.get() + "/js/sidebarCategories.php");
-            }
-        } else if (url.regex("sidebarCategories.php").match()) {
-            List<String> all = page.getHtml().links().all();
+            List<String> all = page.getHtml().xpath("//ul[@class]/li/a").links().all();
             page.addTargetRequests(all);
         } else if (page.getUrl().regex("/view").match()) {
             //产品名称
@@ -85,7 +75,7 @@ public class PPageProcesser implements PageProcessor {
     public static void main(String[] args) {
         Spider.create(new PPageProcesser())
                 .addPipeline(new PPieline())
-                .addUrl("https://www.basketballfantshirts.com")
+                .addUrl("https://www.basketballfantshirts.com/categories")
                 .start();
     }
 

@@ -4,14 +4,16 @@ import cn.hutool.core.date.DateUtil;
 import com.sjw.component.SendMail;
 import com.sjw.crawler.pageprocesser.PPageProcesser;
 import com.sjw.crawler.pipeline.PPieline;
+import com.sjw.tool.UrlUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import us.codecraft.webmagic.Request;
 import us.codecraft.webmagic.Spider;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Administrator on 2018/12/21.
@@ -28,36 +30,26 @@ public class PLancher {
     @Autowired
     private SendMail sendMail;
 
-    @Autowired
-    private ImgLancher imgLancher;
+    @Value("${crawler.thread.num}")
+    private Integer threadNum;
+    @Value("${crawler.name}")
+    private String name;
+    @Value("${crawler.url}")
+    private String urls;
 
-    {
-        list.add("https://www.millionand1tees.com".trim());
-        list.add("https://www.lovemytowntees.com".trim());
-        list.add("https://www.limitedtees.co".trim());
-        list.add("https://www.jobbertshirts.com".trim());
-        list.add("https://www.hockeyfantshirts.com".trim());
-        list.add("https://www.hiphopshirt.com".trim());
-        list.add("https://www.flatlandtees.com".trim());
-        list.add("https://www.drinkshirts.com".trim());
-        list.add("https://www.classicgametees.com".trim());
-        list.add("https://www.bookwormtees.com".trim());
-        list.add("https://www.basketballfantshirts.com".trim());
-        list.add("https://www.basketballcaricaturetshirts.com".trim());
-        list.add("https://www.baseballfantshirts.com".trim());
-    }
 
-    public void stratCrawler() throws ExecutionException, InterruptedException {
-        sendMail.SendEmail("Cralwer is starting," + DateUtil.date(), "Cralwer", "zhangning_holley@126.com");
+    public void stratCrawler() {
+        String[] split = urls.split(",");
+        list = Arrays.asList(split);
+        sendMail.SendEmail("Cralwer is starting," + DateUtil.date(), name, "zhangning_holley@126.com");
         Request[] request = getRequest();
         Spider.create(new PPageProcesser())
                 .addPipeline(pPieline)
                 .addRequest(request)
-                .thread(10)
+                .thread(threadNum)
                 .addUrl()
                 .run();
-        sendMail.SendEmail("Cralwer is end," + DateUtil.date(), "Cralwer", "zhangning_holley@126.com");
-        imgLancher.startDownload();
+        sendMail.SendEmail("Cralwer is end," + DateUtil.date(), name, "zhangning_holley@126.com");
     }
 
     public Request[] getRequest() {
@@ -65,8 +57,9 @@ public class PLancher {
         for (int i = 0; i < list.size(); i++) {
             String str = list.get(i);
             Request request = new Request();
-            request.setUrl(str);
-            request.putExtra("host", str);
+            String categories = UrlUtil.addPath("https://" + str, "categories");
+            request.setUrl(categories);
+            request.putExtra("host", categories);
             requests[i] = request;
         }
         return requests;
