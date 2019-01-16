@@ -39,7 +39,7 @@ public class PPageProcesser implements PageProcessor {
             String product_url = page.getUrl().get();
             page.putField("url", product_url);
             //图片的路径
-            String picture_url = page.getHtml().xpath("//img[@id='firstLoad']/@src").get();
+            String picture_url = page.getHtml().xpath("//img[@id='hoverOverlays']/@src").get();
             page.putField("pictureUrl", picture_url);
             //sku
             String sku = page.getHtml().xpath("//section/div/@id").get();
